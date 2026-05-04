@@ -1,7 +1,9 @@
 'use client';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
 import theme from './theme';
+import Navbar from './components/Navbar';
 
 export default function RootLayout({
   children,
@@ -13,7 +15,10 @@ export default function RootLayout({
       <body>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          {children}
+          <Navbar />
+          <Box sx={{ p: 3 }}>
+            {children}
+          </Box>
         </ThemeProvider>
       </body>
     </html>
