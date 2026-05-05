@@ -21,23 +21,15 @@ import { getOrderById } from '../../services';
 import { Order } from '../../types';
 
 export default function OrderDetailPage() {
-  // FIX 1: useParams() returns string | string[], extract safely
-  const params = useParams();
-  const rawId = Array.isArray(params.id) ? params.id[0] : params.id;
+  const { id } = useParams();
   const router = useRouter();
   const [order, setOrder] = useState<Order | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // FIX 2: Guard against missing or invalid id before fetching
-    if (!rawId) {
-      setLoading(false);
-      return;
-    }
-
     async function fetchOrder() {
       try {
-        const data = await getOrderById(Number(rawId));
+        const data = await getOrderById(Number(id));
         setOrder(data);
       } catch (error) {
         console.error(error);
@@ -46,7 +38,7 @@ export default function OrderDetailPage() {
       }
     }
     fetchOrder();
-  }, [rawId]);
+  }, [id]);
 
   if (loading) {
     return (
@@ -67,25 +59,6 @@ export default function OrderDetailPage() {
     );
   }
 
-  // FIX 3: Derive status chip props from actual order status
-  const getStatusChip = (status?: string) => {
-    switch (status?.toLowerCase()) {
-      case 'active':
-      case 'activo':
-        return { label: 'Activo', color: 'success' as const };
-      case 'pending':
-      case 'pendiente':
-        return { label: 'Pendiente', color: 'warning' as const };
-      case 'cancelled':
-      case 'cancelado':
-        return { label: 'Cancelado', color: 'error' as const };
-      default:
-        return { label: status ?? 'Sin estado', color: 'default' as const };
-    }
-  };
-
-  const statusChip = getStatusChip(order.status);
-
   return (
     <Box>
       {/* Header */}
@@ -97,8 +70,7 @@ export default function OrderDetailPage() {
           <Typography variant="h5" fontWeight={700}>
             Pedido #{order.orderNumber ?? order.id}
           </Typography>
-          {/* FIX 3: Show real status instead of hardcoded "Activo" */}
-          <Chip label={statusChip.label} color={statusChip.color} size="small" />
+          <Chip label="Activo" color="success" size="small" />
         </Box>
         <Button
           variant="contained"
@@ -128,9 +100,8 @@ export default function OrderDetailPage() {
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography color="text.secondary">Total</Typography>
-                {/* FIX 4: Fallback to 0 if totalAmount is null/undefined */}
                 <Typography fontWeight={700} color="primary">
-                  ${(order.totalAmount ?? 0).toLocaleString()}
+                  ${order.totalAmount?.toLocaleString()}
                 </Typography>
               </Box>
             </Box>
@@ -187,23 +158,18 @@ export default function OrderDetailPage() {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {order.items?.map((item) => {
-                    // FIX 5: Safe arithmetic with null/undefined guards
-                    const unitPrice = item.unitPrice ?? 0;
-                    const quantity = item.quantity ?? 0;
-                    const subtotal = unitPrice * quantity;
-
-                    return (
-                      <TableRow key={item.id}>
-                        <TableCell>
-                          {item.product?.productName ?? `Producto #${item.productId}`}
-                        </TableCell>
-                        <TableCell>${unitPrice.toLocaleString()}</TableCell>
-                        <TableCell>{quantity}</TableCell>
-                        <TableCell>${subtotal.toLocaleString()}</TableCell>
-                      </TableRow>
-                    );
-                  })}
+                  {order.items?.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell>
+                        {item.product?.productName ?? `Producto #${item.productId}`}
+                      </TableCell>
+                      <TableCell>${item.unitPrice?.toLocaleString()}</TableCell>
+                      <TableCell>{item.quantity}</TableCell>
+                      <TableCell>
+                        ${(item.unitPrice * item.quantity)?.toLocaleString()}
+                      </TableCell>
+                    </TableRow>
+                  ))}
                   {(!order.items || order.items.length === 0) && (
                     <TableRow>
                       <TableCell colSpan={4} align="center">Sin items</TableCell>
