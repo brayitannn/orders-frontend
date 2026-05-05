@@ -35,7 +35,7 @@ function KpiCard({ title, value, icon, color }: KpiCardProps) {
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Box>
             <Typography color="text.secondary" variant="body2">{title}</Typography>
-            <Typography variant="h4" fontWeight={700} mt={1}>{value}</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 700, mt: 1 }}>{value}</Typography>
           </Box>
           <Box sx={{
             backgroundColor: color,
@@ -94,26 +94,26 @@ export default function Dashboard() {
 
   return (
     <Box>
-      <Typography variant="h5" fontWeight={700} mb={3}>Dashboard</Typography>
+      <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>Dashboard</Typography>
 
       {/* KPIs */}
-      <Grid container spacing={3} mb={4}>
-        <Grid item xs={12} sm={6} md={3}>
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <KpiCard title="Total pedidos" value={orders.length} icon={<ShoppingCartIcon />} color="#1976d2" />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <KpiCard title="Total vendido" value={`$${totalAmount.toLocaleString()}`} icon={<AttachMoneyIcon />} color="#2e7d32" />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <KpiCard title="Productos activos" value={totalProducts} icon={<InventoryIcon />} color="#ed6c02" />
         </Grid>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid size={{ xs: 12, sm: 6, md: 3 }}>
           <KpiCard title="Clientes" value={totalCustomers} icon={<PeopleIcon />} color="#9c27b0" />
         </Grid>
       </Grid>
 
       {/* Últimos pedidos */}
-      <Typography variant="h6" fontWeight={600} mb={2}>Últimos pedidos</Typography>
+      <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Últimos pedidos</Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>

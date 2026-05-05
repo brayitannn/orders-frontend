@@ -67,7 +67,7 @@ export default function OrderDetailPage() {
           <Button startIcon={<ArrowBackIcon />} onClick={() => router.push('/orders')}>
             Volver
           </Button>
-          <Typography variant="h5" fontWeight={700}>
+          <Typography variant="h5" sx={{ fontWeight: 700 }}>
             Pedido #{order.orderNumber ?? order.id}
           </Typography>
           <Chip label="Activo" color="success" size="small" />
@@ -83,24 +83,24 @@ export default function OrderDetailPage() {
 
       <Grid container spacing={3}>
         {/* Info del pedido */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" fontWeight={600} mb={2}>Información del pedido</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Información del pedido</Typography>
             <Divider sx={{ mb: 2 }} />
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography color="text.secondary">Número</Typography>
-                <Typography fontWeight={500}>{order.orderNumber ?? order.id}</Typography>
+                <Typography sx={{ fontWeight: 500 }}>{order.orderNumber ?? order.id}</Typography>
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography color="text.secondary">Fecha</Typography>
-                <Typography fontWeight={500}>
+                <Typography sx={{ fontWeight: 500 }}>
                   {new Date(order.orderDate).toLocaleDateString('es-CO')}
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography color="text.secondary">Total</Typography>
-                <Typography fontWeight={700} color="primary">
+                <Typography sx={{ fontWeight: 700 }} color="primary">
                   ${order.totalAmount?.toLocaleString()}
                 </Typography>
               </Box>
@@ -109,14 +109,14 @@ export default function OrderDetailPage() {
         </Grid>
 
         {/* Info del cliente */}
-        <Grid item xs={12} md={6}>
+        <Grid size={{ xs: 12, md: 6 }}>
           <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" fontWeight={600} mb={2}>Cliente</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Cliente</Typography>
             <Divider sx={{ mb: 2 }} />
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
               <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                 <Typography color="text.secondary">Nombre</Typography>
-                <Typography fontWeight={500}>
+                <Typography sx={{ fontWeight: 500 }}>
                   {order.customer
                     ? `${order.customer.firstName} ${order.customer.lastName}`
                     : `Cliente #${order.customerId}`}
@@ -126,15 +126,15 @@ export default function OrderDetailPage() {
                 <>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography color="text.secondary">Ciudad</Typography>
-                    <Typography fontWeight={500}>{order.customer.city}</Typography>
+                    <Typography sx={{ fontWeight: 500 }}>{order.customer.city}</Typography>
                   </Box>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography color="text.secondary">País</Typography>
-                    <Typography fontWeight={500}>{order.customer.country}</Typography>
+                    <Typography sx={{ fontWeight: 500 }}>{order.customer.country}</Typography>
                   </Box>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                     <Typography color="text.secondary">Teléfono</Typography>
-                    <Typography fontWeight={500}>{order.customer.phone}</Typography>
+                    <Typography sx={{ fontWeight: 500 }}>{order.customer.phone}</Typography>
                   </Box>
                 </>
               )}
@@ -143,9 +143,9 @@ export default function OrderDetailPage() {
         </Grid>
 
         {/* Items del pedido */}
-        <Grid item xs={12}>
+        <Grid size={{ xs: 12 }}>
           <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" fontWeight={600} mb={2}>Productos del pedido</Typography>
+            <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Productos del pedido</Typography>
             <Divider sx={{ mb: 2 }} />
             <TableContainer>
               <Table>

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -20,11 +20,7 @@ export default function HealthPage() {
   const [status, setStatus] = useState<'ok' | 'error' | 'loading'>('loading');
   const [checkedAt, setCheckedAt] = useState<string>('');
 
-  useEffect(() => {
-    checkHealth();
-  }, []);
-
-  async function checkHealth() {
+  const checkHealth = useCallback(async () => {
     setStatus('loading');
     try {
       await getHealth();
@@ -34,14 +30,19 @@ export default function HealthPage() {
     } finally {
       setCheckedAt(new Date().toLocaleTimeString('es-CO'));
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line
+    checkHealth();
+  }, [checkHealth]);
 
   return (
     <Box>
-      <Typography variant="h5" fontWeight={700} mb={3}>Estado del sistema</Typography>
+      <Typography variant="h5" sx={{ fontWeight: 700, mb: 3 }}>Estado del sistema</Typography>
 
       <Paper sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h6" fontWeight={600} mb={2}>API REST</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>API REST</Typography>
         <Divider sx={{ mb: 3 }} />
 
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
@@ -99,24 +100,24 @@ export default function HealthPage() {
       </Paper>
 
       <Paper sx={{ p: 3 }}>
-        <Typography variant="h6" fontWeight={600} mb={2}>Información del sistema</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>Información del sistema</Typography>
         <Divider sx={{ mb: 2 }} />
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography color="text.secondary">URL de la API</Typography>
-            <Typography fontWeight={500}>{API_URL}</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{API_URL}</Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography color="text.secondary">Versión</Typography>
-            <Typography fontWeight={500}>v1.0.0</Typography>
+            <Typography sx={{ fontWeight: 500 }}>v1.0.0</Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography color="text.secondary">Frontend</Typography>
-            <Typography fontWeight={500}>Next.js + Material UI</Typography>
+            <Typography sx={{ fontWeight: 500 }}>Next.js + Material UI</Typography>
           </Box>
           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
             <Typography color="text.secondary">Endpoint health</Typography>
-            <Typography fontWeight={500}>{API_URL}/api/v1/health</Typography>
+            <Typography sx={{ fontWeight: 500 }}>{API_URL}/api/v1/health</Typography>
           </Box>
         </Box>
       </Paper>

@@ -104,14 +104,14 @@ export default function NewOrderPage() {
         <Button startIcon={<ArrowBackIcon />} onClick={() => router.push('/orders')}>
           Volver
         </Button>
-        <Typography variant="h5" fontWeight={700}>Nuevo pedido</Typography>
+        <Typography variant="h5" sx={{ fontWeight: 700 }}>Nuevo pedido</Typography>
       </Box>
 
       {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
       {success && <Alert severity="success" sx={{ mb: 2 }}>{success}</Alert>}
 
       <Paper sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h6" fontWeight={600} mb={2}>1. Seleccionar cliente</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>1. Seleccionar cliente</Typography>
         <Divider sx={{ mb: 2 }} />
         <TextField
           select
@@ -130,7 +130,7 @@ export default function NewOrderPage() {
       </Paper>
 
       <Paper sx={{ p: 3, mb: 3 }}>
-        <Typography variant="h6" fontWeight={600} mb={2}>2. Agregar productos</Typography>
+        <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>2. Agregar productos</Typography>
         <Divider sx={{ mb: 2 }} />
         <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
           <TextField
@@ -154,7 +154,7 @@ export default function NewOrderPage() {
             onChange={(e) => setQuantity(Number(e.target.value))}
             size="small"
             sx={{ width: 100 }}
-            inputProps={{ min: 1 }}
+            slotProps={{ htmlInput: { min: 1 } }}
           />
           <Button variant="outlined" startIcon={<AddIcon />} onClick={handleAddItem}>
             Agregar
@@ -198,7 +198,7 @@ export default function NewOrderPage() {
 
       <Paper sx={{ p: 3 }}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Typography variant="h6" fontWeight={700}>
+          <Typography variant="h6" sx={{ fontWeight: 700 }}>
             Total: ${calcTotal().toLocaleString()}
           </Typography>
           <Button

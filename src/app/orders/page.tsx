@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -30,11 +30,7 @@ export default function OrdersPage() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [search, setSearch] = useState('');
 
-  useEffect(() => {
-    fetchOrders();
-  }, [page, rowsPerPage]);
-
-  async function fetchOrders() {
+  const fetchOrders = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getOrders(page + 1, rowsPerPage);
@@ -44,7 +40,12 @@ export default function OrdersPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [page, rowsPerPage]);
+
+  useEffect(() => {
+    // eslint-disable-next-line
+    fetchOrders();
+  }, [fetchOrders]);
 
   async function handleDelete(id: number) {
     if (!confirm('¿Seguro que deseas eliminar este pedido?')) return;
@@ -64,7 +65,7 @@ export default function OrdersPage() {
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h5" fontWeight={700}>Pedidos</Typography>
+        <Typography variant="h5" sx={{ fontWeight: 700 }}>Pedidos</Typography>
         <Button
           variant="contained"
           startIcon={<AddIcon />}

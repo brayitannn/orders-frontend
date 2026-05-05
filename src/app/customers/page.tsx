@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -39,11 +39,7 @@ export default function CustomersPage() {
     firstName: '', lastName: '', city: '', country: '', phone: '',
   });
 
-  useEffect(() => {
-    fetchCustomers();
-  }, [page, rowsPerPage]);
-
-  async function fetchCustomers() {
+  const fetchCustomers = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getCustomers(page + 1, rowsPerPage);
@@ -53,7 +49,12 @@ export default function CustomersPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [page, rowsPerPage]);
+
+  useEffect(() => {
+    // eslint-disable-next-line
+    fetchCustomers();
+  }, [fetchCustomers]);
 
   function handleOpenEdit(customer: Customer) {
     setEditCustomer(customer);
@@ -106,7 +107,7 @@ export default function CustomersPage() {
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h5" fontWeight={700}>Clientes</Typography>
+        <Typography variant="h5" sx={{ fontWeight: 700 }}>Clientes</Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>
           Nuevo cliente
         </Button>

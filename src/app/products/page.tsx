@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Paper from '@mui/material/Paper';
@@ -19,7 +19,6 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
-import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit';
@@ -40,11 +39,7 @@ export default function ProductsPage() {
   const [editProduct, setEditProduct] = useState<Product | null>(null);
   const [formData, setFormData] = useState({ productName: '', unitPrice: '', package: '', isDiscontinued: false });
 
-  useEffect(() => {
-    fetchProducts();
-  }, [page, rowsPerPage]);
-
-  async function fetchProducts() {
+  const fetchProducts = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getProducts(page + 1, rowsPerPage);
@@ -54,7 +49,12 @@ export default function ProductsPage() {
     } finally {
       setLoading(false);
     }
-  }
+  }, [page, rowsPerPage]);
+
+  useEffect(() => {
+    // eslint-disable-next-line
+    fetchProducts();
+  }, [fetchProducts]);
 
   function handleOpenEdit(product: Product) {
     setEditProduct(product);
@@ -110,7 +110,7 @@ export default function ProductsPage() {
   return (
     <Box>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h5" fontWeight={700}>Productos</Typography>
+        <Typography variant="h5" sx={{ fontWeight: 700 }}>Productos</Typography>
         <Button variant="contained" startIcon={<AddIcon />} onClick={handleOpenCreate}>
           Nuevo producto
         </Button>
