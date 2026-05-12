@@ -19,7 +19,7 @@ export default function Navbar() {
     <AppBar position="static">
       <Toolbar>
         <Typography variant="h6" sx={{ flexGrow: 0, mr: 4, fontWeight: 700 }}>
-          Orders App
+          Orders
         </Typography>
         <Box sx={{ display: 'flex', gap: 1, flexGrow: 1 }}>
           {pages.map((page) => (
